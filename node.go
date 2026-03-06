@@ -6,119 +6,128 @@ import (
 	"syscall/js"
 )
 
-type Node struct {
+type Node interface {
+	Underlying() js.Value
+}
+
+type BaseNode struct {
+	Node
 	js.Value
 }
 
-func WrapNode(val js.Value) *Node {
-	return &Node{Value: val}
+func WrapNode(val js.Value) *BaseNode {
+	return &BaseNode{Value: val}
 }
 
-func (e *Node) AppendChild(child *Node) {
-	e.Call("appendChild", child.Value)
+func (b *BaseNode) Underlying() js.Value {
+	return b.Value
 }
 
-func (e *Node) AppendChildren(children ...*Node) {
+func (e *BaseNode) AppendChild(child Node) {
+	e.Call("appendChild", child.Underlying())
+}
+
+func (e *BaseNode) AppendChildren(children ...*BaseNode) {
 	for _, child := range children {
 		e.AppendChild(child)
 	}
 }
 
-func (e *Node) RemoveAllChildNodes() {
+func (e *BaseNode) RemoveAllChildNodes() {
 	for e.HasChildNodes() {
 		e.RemoveChild(e.LastChild())
 	}
 }
 
-func (e *Node) ChildNodes() []*Node {
+func (e *BaseNode) ChildNodes() []*BaseNode {
 	nodeList := e.Get("childNodes")
 	length := nodeList.Get("length").Int()
-	var nodes []*Node
+	var nodes []*BaseNode
 	for i := 0; i < length; i++ {
-		nodes = append(nodes, &Node{nodeList.Call("item", i)})
+		nodes = append(nodes, WrapNode(nodeList.Call("item", i)))
 	}
 	return nodes
 }
 
-func (e *Node) FirstChild() *Node {
-	return &Node{e.Get("firstChild")}
+func (e *BaseNode) FirstChild() *BaseNode {
+	return WrapNode(e.Get("firstChild"))
 }
 
-func (e *Node) LastChild() *Node {
-	return &Node{e.Get("lastChild")}
+func (e *BaseNode) LastChild() *BaseNode {
+	return WrapNode(e.Get("lastChild"))
 }
 
-func (e *Node) NextSibling() *Node {
-	return &Node{e.Get("nextSibling")}
+func (e *BaseNode) NextSibling() *BaseNode {
+	return WrapNode(e.Get("nextSibling"))
 }
 
-func (e *Node) NodeType() int {
+func (e *BaseNode) NodeType() int {
 	return e.Get("nodeType").Int()
 }
 
-func (e *Node) NodeValue() string {
+func (e *BaseNode) NodeValue() string {
 	return e.Get("nodeValue").String()
 }
 
-func (e *Node) SetNodeValue(s string) *Node {
+func (e *BaseNode) SetNodeValue(s string) *BaseNode {
 	e.Set("nodeValue", s)
 	return e
 }
-func (e *Node) ParentNode() *Node {
-	return &Node{e.Get("parentNode")}
+func (e *BaseNode) ParentNode() *BaseNode {
+	return WrapNode(e.Get("parentNode"))
 }
 
-func (e *Node) TextContent() string {
+func (e *BaseNode) TextContent() string {
 	return e.Get("textContent").String()
 }
 
-func (e *Node) SetTextContent(s string) *Node {
+func (e *BaseNode) SetTextContent(s string) *BaseNode {
 	e.Set("textContent", s)
 	return e
 }
 
-func (e *Node) Contains(n *Node) bool {
-	return e.Call("contains", n).Bool()
+func (e *BaseNode) Contains(n Node) bool {
+	return e.Call("contains", n.Underlying()).Bool()
 }
 
-func (e *Node) HasChildNodes() bool {
+func (e *BaseNode) HasChildNodes() bool {
 	return e.Call("hasChildNodes").Bool()
 }
 
-func (e *Node) InsertBefore(newNode, referenceNode *Node) *Node {
-	return &Node{e.Call("insertBefore", newNode, referenceNode)}
+func (e *BaseNode) InsertBefore(newNode, referenceNode Node) *BaseNode {
+	return WrapNode(e.Call("insertBefore", newNode.Underlying(), referenceNode.Underlying()))
 }
 
-func (e *Node) IsEqualNode(n *Node) bool {
-	return e.Call("isEqualNode", n).Bool()
+func (e *BaseNode) IsEqualNode(n Node) bool {
+	return e.Call("isEqualNode", n.Underlying()).Bool()
 }
 
-func (e *Node) IsSameNode(n *Node) bool {
-	return e.Call("isSameNode", n).Bool()
+func (e *BaseNode) IsSameNode(n Node) bool {
+	return e.Call("isSameNode", n.Underlying()).Bool()
 }
 
-func (e *Node) LookupPrefix() string {
+func (e *BaseNode) LookupPrefix() string {
 	return e.Call("lookupPrefix").String()
 }
 
-func (e *Node) Normalize() {
+func (e *BaseNode) Normalize() {
 	e.Call("normalize")
 }
 
-func (e *Node) RemoveChild(c *Node) *Node {
-	return &Node{e.Call("removeChild", c)}
+func (e *BaseNode) RemoveChild(c Node) *BaseNode {
+	return WrapNode(e.Call("removeChild", c.Underlying()))
 }
 
-func (e *Node) ReplaceChild(newChild, oldChild *Node) *Node {
-	return &Node{e.Call("replaceChild", newChild, oldChild)}
+func (e *BaseNode) ReplaceChild(newChild, oldChild Node) *BaseNode {
+	return WrapNode(e.Call("replaceChild", newChild.Underlying(), oldChild.Underlying()))
 }
 
-func (e *Node) AddEventListener(t string, listener js.Func) *Node {
+func (e *BaseNode) AddEventListener(t string, listener js.Func) *BaseNode {
 	e.Call("addEventListener", t, listener)
 	return e
 }
 
-func (e *Node) RemoveEventListener(t string, listener js.Func) *Node {
+func (e *BaseNode) RemoveEventListener(t string, listener js.Func) *BaseNode {
 	e.Call("removeEventListener", t, listener)
 	return e
 }

@@ -6,13 +6,13 @@ import "syscall/js"
 
 // Document wraps the JavaScript document element, which is usually fetched by js.Global().Get("document")
 type Document struct {
-	js.Value
+	*BaseNode
 }
 
 var doc = js.Global().Get("document")
 
 func GetDocument() *Document {
-	return &Document{doc}
+	return &Document{WrapNode(doc)}
 }
 
 func (e *Document) ActiveElement() *Element {

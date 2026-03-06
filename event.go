@@ -8,8 +8,8 @@ type Event struct {
 	js.Value
 }
 
-func (e *Event) Target() *Node {
-	return &Node{e.Get("target")}
+func (e *Event) Target() *Element {
+	return WrapElement(e.Get("target"))
 }
 
 func (e *Event) PreventDefault() {

@@ -9,11 +9,11 @@ import (
 )
 
 type Element struct {
-	*Node
+	*BaseNode
 }
 
 func WrapElement(val js.Value) *Element {
-	return &Element{Node: WrapNode(val)}
+	return &Element{BaseNode: WrapNode(val)}
 }
 
 func (e *Element) HasFocus() bool {
@@ -103,7 +103,7 @@ func (e *Element) SetMultiValueAttribute(attributeName string, values ...string)
 // AppendChildBr appends the child and adds an additional br
 func (e *Element) AppendChildBr(child *Element) {
 	e.Call("appendChild", child)
-	e.Call("appendChild", GetDocument().CreateElement("br").Node)
+	e.Call("appendChild", GetDocument().CreateElement("br"))
 }
 
 func (e *Element) AppendChildrenBr(children ...*Element) {
@@ -114,7 +114,7 @@ func (e *Element) AppendChildrenBr(children ...*Element) {
 
 func (e *Element) Br() {
 	br := GetDocument().CreateElement("br")
-	e.AppendChild(br.Node)
+	e.AppendChild(br)
 }
 
 func (e *Element) QuerySelector(selectors string) *Element {

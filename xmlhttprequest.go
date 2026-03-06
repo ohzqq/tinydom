@@ -20,8 +20,8 @@ func (x *XMLHttpRequest) ResponseURL() string {
 	return x.Get("responseURL").String()
 }
 
-func (x *XMLHttpRequest) ResponseXML() *Node {
-	return &Node{x.Get("responseXML")}
+func (x *XMLHttpRequest) ResponseXML() *Element {
+	return WrapElement(x.Get("responseXML"))
 }
 
 func (x *XMLHttpRequest) StatusText() string {
