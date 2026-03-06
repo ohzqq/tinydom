@@ -8,6 +8,10 @@ type CSS struct {
 	js.Value
 }
 
+func (s *CSS) SetProperty(name string, val string) {
+	s.Call("setProperty", name, val)
+}
+
 func (s *CSS) CssText() string {
 	return s.Get("cssText").String()
 }
