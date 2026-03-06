@@ -23,7 +23,7 @@ func (e *Element) AppendAfter(n *Element) {
 }
 
 func (e *Element) AppendChild(child *Element) {
-	e.Call("appendChild", child)
+	e.Call("appendChild", child.Value)
 }
 
 func (e *Element) AppendChildren(children ...*Element) {
