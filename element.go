@@ -118,33 +118,15 @@ func (e *Element) Br() {
 }
 
 func (e *Element) QuerySelector(selectors string) *Element {
-	return WrapElement(e.Call("querySelector", selectors))
+	return querySelector(e.Value, selectors)
 }
 
 func (e *Element) QuerySelectorAll(selectors string) []*Element {
-	nodeList := e.Call("querySelectorAll", selectors)
-	length := nodeList.Get("length").Int()
-
-	nodes := make([]*Element, length)
-
-	for i := 0; i < length; i++ {
-		nodes[i] = WrapElement(nodeList.Call("item", i))
-	}
-
-	return nodes
+	return querySelectorAll(e.Value, selectors)
 }
 
 func (e *Element) GetElementsByTagName(tagName string) []*Element {
-	nodeList := e.Call("getElementsByTagName", tagName)
-	length := nodeList.Get("length").Int()
-
-	nodes := make([]*Element, length)
-
-	for i := 0; i < length; i++ {
-		nodes[i] = WrapElement(nodeList.Call("item", i))
-	}
-
-	return nodes
+	return querySelectorAll(e.Value, tagName)
 }
 
 func (e *Element) SetInnerHTML(value string) *Element {

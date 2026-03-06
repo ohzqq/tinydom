@@ -122,3 +122,33 @@ func (e *Node) RemoveEventListener(t string, listener js.Func) *Node {
 	e.Call("removeEventListener", t, listener)
 	return e
 }
+
+func querySelector(e js.Value, selectors string) *Element {
+	return WrapElement(e.Call("querySelector", selectors))
+}
+
+func querySelectorAll(e js.Value, selectors string) []*Element {
+	nodeList := e.Call("querySelectorAll", selectors)
+	length := nodeList.Get("length").Int()
+
+	nodes := make([]*Element, length)
+
+	for i := 0; i < length; i++ {
+		nodes[i] = WrapElement(nodeList.Call("item", i))
+	}
+
+	return nodes
+}
+
+func getElementsByTagName(e js.Value, tagName string) []*Element {
+	nodeList := e.Call("getElementsByTagName", tagName)
+	length := nodeList.Get("length").Int()
+
+	nodes := make([]*Element, length)
+
+	for i := 0; i < length; i++ {
+		nodes[i] = WrapElement(nodeList.Call("item", i))
+	}
+
+	return nodes
+}

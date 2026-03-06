@@ -39,6 +39,18 @@ func (d *Document) GetElementById(id string) *Element {
 	return WrapElement(d.Call("getElementById", id))
 }
 
+func (e *Document) QuerySelector(selectors string) *Element {
+	return querySelector(e.Value, selectors)
+}
+
+func (e *Document) QuerySelectorAll(selectors string) []*Element {
+	return querySelectorAll(e.Value, selectors)
+}
+
+func (e *Document) GetElementsByTagName(tagName string) []*Element {
+	return querySelectorAll(e.Value, tagName)
+}
+
 func (d *Document) Write(markup string) {
 	d.Call("write", markup)
 }
