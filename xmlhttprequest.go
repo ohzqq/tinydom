@@ -1,3 +1,5 @@
+//go:build js && wasm
+
 package tinydom
 
 import "syscall/js"
@@ -18,8 +20,8 @@ func (x *XMLHttpRequest) ResponseURL() string {
 	return x.Get("responseURL").String()
 }
 
-func (x *XMLHttpRequest) ResponseXML() *Element {
-	return &Element{x.Get("responseXML")}
+func (x *XMLHttpRequest) ResponseXML() *Node {
+	return &Node{x.Get("responseXML")}
 }
 
 func (x *XMLHttpRequest) StatusText() string {

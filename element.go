@@ -1,12 +1,19 @@
+//go:build js && wasm
+
 package tinydom
 
 import (
 	"errors"
 	"strings"
+	"syscall/js"
 )
 
 type Element struct {
 	*Node
+}
+
+func WrapElement(val js.Value) *Element {
+	return &Element{Node: WrapNode(val)}
 }
 
 func (e *Element) HasFocus() bool {
@@ -96,7 +103,7 @@ func (e *Element) SetMultiValueAttribute(attributeName string, values ...string)
 // AppendChildBr appends the child and adds an additional br
 func (e *Element) AppendChildBr(child *Element) {
 	e.Call("appendChild", child)
-	e.Call("appendChild", GetDocument().CreateElement("br"))
+	e.Call("appendChild", GetDocument().CreateElement("br").Node)
 }
 
 func (e *Element) AppendChildrenBr(children ...*Element) {
@@ -107,11 +114,11 @@ func (e *Element) AppendChildrenBr(children ...*Element) {
 
 func (e *Element) Br() {
 	br := GetDocument().CreateElement("br")
-	e.AppendChild(br)
+	e.AppendChild(br.Node)
 }
 
 func (e *Element) QuerySelector(selectors string) *Element {
-	return &Element{e.Call("querySelector", selectors)}
+	return WrapElement(e.Call("querySelector", selectors))
 }
 
 func (e *Element) QuerySelectorAll(selectors string) []*Element {
@@ -121,7 +128,7 @@ func (e *Element) QuerySelectorAll(selectors string) []*Element {
 	nodes := make([]*Element, length)
 
 	for i := 0; i < length; i++ {
-		nodes[i] = &Element{nodeList.Call("item", i)}
+		nodes[i] = WrapElement(nodeList.Call("item", i))
 	}
 
 	return nodes
@@ -134,7 +141,7 @@ func (e *Element) GetElementsByTagName(tagName string) []*Element {
 	nodes := make([]*Element, length)
 
 	for i := 0; i < length; i++ {
-		nodes[i] = &Element{nodeList.Call("item", i)}
+		nodes[i] = WrapElement(nodeList.Call("item", i))
 	}
 
 	return nodes
@@ -158,10 +165,6 @@ func (e *Element) SetOuterHTML(html string) *Element {
 	return e
 }
 
-func (e *Element) TagName() string {
-	return e.Get("tagName").String()
-}
-
 // GetAttribute returns the searched attribute, returns false if the attribute wasn't found.
 func (e *Element) GetAttribute(name string) (bool, string) {
 	if !e.HasAttribute(name) {
@@ -173,6 +176,22 @@ func (e *Element) GetAttribute(name string) (bool, string) {
 
 func (e *Element) HasAttribute(name string) bool {
 	return e.Call("hasAttribute", name).Bool()
+}
+
+func (e *Element) FindChildNode(tag string) *Element {
+	children := e.ChildNodes()
+	for _, child := range children {
+		c := WrapElement(child.Value)
+		if c.TagName() == tag {
+			return c
+		}
+	}
+
+	return nil
+}
+
+func (e *Element) TagName() string {
+	return e.Get("tagName").String()
 }
 
 func (e *Element) Name() string {
@@ -188,10 +207,6 @@ func (e *Element) Style() *CSS {
 	return &CSS{e.Get("style")}
 }
 
-func (e *Element) Dataset() *Element {
-	return &Element{e.Get("dataset")}
-}
-
 func (e *Element) Blur() *Element {
 	e.Call("blur")
 	return e
@@ -200,4 +215,31 @@ func (e *Element) Blur() *Element {
 func (e *Element) Focus() *Element {
 	e.Call("focus")
 	return e
+}
+
+// Copyright (c) 2014 Dominik Honnef
+// MIT License
+// from  github.com/dominikh/go-js-dom
+
+func (e *Element) Dataset() map[string]string {
+	o := e.Get("dataset")
+	data := map[string]string{}
+	keys := jsKeys(o)
+	for _, key := range keys {
+		data[key] = o.Get(key).String()
+	}
+	return data
+}
+
+// jsKeys returns the keys of the given JavaScript object.
+func jsKeys(o js.Value) []string {
+	if o.IsNull() || o.IsUndefined() {
+		return nil
+	}
+	a := js.Global().Get("Object").Call("keys", o)
+	s := make([]string, a.Length())
+	for i := 0; i < a.Length(); i++ {
+		s[i] = a.Index(i).String()
+	}
+	return s
 }

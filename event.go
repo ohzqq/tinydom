@@ -1,3 +1,5 @@
+//go:build js && wasm
+
 package tinydom
 
 import "syscall/js"
@@ -6,8 +8,8 @@ type Event struct {
 	js.Value
 }
 
-func (e *Event) Target() *Element {
-	return &Element{e.Get("target")}
+func (e *Event) Target() *Node {
+	return &Node{e.Get("target")}
 }
 
 func (e *Event) PreventDefault() {

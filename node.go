@@ -1,3 +1,5 @@
+//go:build js && wasm
+
 package tinydom
 
 import (
@@ -36,17 +38,6 @@ func (e *Node) ChildNodes() []*Node {
 		nodes = append(nodes, &Node{nodeList.Call("item", i)})
 	}
 	return nodes
-}
-
-func (e *Node) FindChildNode(tag string) *Node {
-	children := e.ChildNodes()
-	for _, child := range children {
-		if child.TagName() == tag {
-			return child
-		}
-	}
-
-	return nil
 }
 
 func (e *Node) FirstChild() *Node {
@@ -122,12 +113,12 @@ func (e *Node) ReplaceChild(newChild, oldChild *Node) *Node {
 	return &Node{e.Call("replaceChild", newChild, oldChild)}
 }
 
-func (e *Node) AddEventListener(t string, listener js.Func) *Element {
+func (e *Node) AddEventListener(t string, listener js.Func) *Node {
 	e.Call("addEventListener", t, listener)
 	return e
 }
 
-func (e *Node) RemoveEventListener(t string, listener js.Func) *Element {
+func (e *Node) RemoveEventListener(t string, listener js.Func) *Node {
 	e.Call("removeEventListener", t, listener)
 	return e
 }

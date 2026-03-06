@@ -1,3 +1,5 @@
+//go:build js && wasm
+
 package tinydom
 
 import "syscall/js"
@@ -14,27 +16,27 @@ func GetDocument() *Document {
 }
 
 func (e *Document) ActiveElement() *Element {
-	return &Element{e.Get("activeElement")}
+	return WrapElement(e.Get("activeElement"))
 }
 
 func (e *Document) DocumentElement() *Element {
-	return &Element{e.Get("documentElement")}
+	return WrapElement(e.Get("documentElement"))
 }
 
 func (d *Document) CreateElement(tag string) *Element {
-	return &Element{d.Call("createElement", tag)}
+	return WrapElement(d.Call("createElement", tag))
 }
 
 func (d *Document) CreateTextElement(textContent string) *Element {
-	return &Element{d.Call("createTextNode", textContent)}
+	return WrapElement(d.Call("createTextNode", textContent))
 }
 
 func (d *Document) CreateDocumentFragment() *Element {
-	return &Element{d.Call("createDocumentFragment")}
+	return WrapElement(d.Call("createDocumentFragment"))
 }
 
 func (d *Document) GetElementById(id string) *Element {
-	return &Element{d.Call("getElementById", id)}
+	return WrapElement(d.Call("getElementById", id))
 }
 
 func (d *Document) Write(markup string) {
