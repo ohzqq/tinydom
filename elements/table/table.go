@@ -1,6 +1,8 @@
 package table
 
-import "github.com/Nerzal/tinydom"
+import (
+	"github.com/ohzqq/tinydom"
+)
 
 type Table struct {
 	*tinydom.Element

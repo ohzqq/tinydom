@@ -1,6 +1,8 @@
 package li
 
-import "github.com/Nerzal/tinydom"
+import (
+	"github.com/ohzqq/tinydom"
+)
 
 // Li is a li element
 // See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/li for reference

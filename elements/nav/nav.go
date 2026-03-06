@@ -1,8 +1,8 @@
 package nav
 
 import (
-	"github.com/Nerzal/tinydom"
-	"github.com/Nerzal/tinydom/elements/li"
+	"github.com/ohzqq/tinydom"
+	"github.com/ohzqq/tinydom/elements/li"
 )
 
 // Nav is a nav element

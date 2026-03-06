@@ -3,7 +3,7 @@ package media
 import (
 	"strconv"
 
-	"github.com/Nerzal/tinydom"
+	"github.com/ohzqq/tinydom"
 )
 
 const videoAlt = "Your browser does not support the video tag."

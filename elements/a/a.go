@@ -1,6 +1,8 @@
 package a
 
-import "github.com/Nerzal/tinydom"
+import (
+	"github.com/ohzqq/tinydom"
+)
 
 // A is an a element
 // See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a for reference

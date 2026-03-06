@@ -1,6 +1,8 @@
 package form
 
-import "github.com/Nerzal/tinydom"
+import (
+	"github.com/ohzqq/tinydom"
+)
 
 type FieldSet struct {
 	*tinydom.Element

@@ -1,6 +1,8 @@
 package img
 
-import "github.com/Nerzal/tinydom"
+import (
+	"github.com/ohzqq/tinydom"
+)
 
 // Img is the html5 element img
 // See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img for reference

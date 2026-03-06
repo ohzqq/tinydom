@@ -3,7 +3,7 @@ package form
 import (
 	"strings"
 
-	"github.com/Nerzal/tinydom"
+	"github.com/ohzqq/tinydom"
 )
 
 type Form struct {

@@ -1,7 +1,7 @@
 package input
 
 import (
-	"github.com/Nerzal/tinydom"
+	"github.com/ohzqq/tinydom"
 )
 
 type Input struct {

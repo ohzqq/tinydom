@@ -1,6 +1,8 @@
 package media
 
-import "github.com/Nerzal/tinydom"
+import (
+	"github.com/ohzqq/tinydom"
+)
 
 // <track src="fgsubtitles_en.vtt" kind="subtitles" srclang="en" label="English">
 

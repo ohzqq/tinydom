@@ -1,6 +1,8 @@
 package picture
 
-import "github.com/Nerzal/tinydom"
+import (
+	"github.com/ohzqq/tinydom"
+)
 
 // <source srcset="/media/cc0-images/surfer-240-200.jpg" media="(min-width: 800px)">
 

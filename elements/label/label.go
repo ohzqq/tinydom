@@ -1,6 +1,8 @@
 package label
 
-import "github.com/Nerzal/tinydom"
+import (
+	"github.com/ohzqq/tinydom"
+)
 
 type Label struct {
 	*tinydom.Element

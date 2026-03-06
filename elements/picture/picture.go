@@ -1,8 +1,8 @@
 package picture
 
 import (
-	"github.com/Nerzal/tinydom"
-	"github.com/Nerzal/tinydom/elements/img"
+	"github.com/ohzqq/tinydom"
+	"github.com/ohzqq/tinydom/elements/img"
 )
 
 // <picture>
