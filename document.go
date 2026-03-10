@@ -19,6 +19,14 @@ func (e *Document) ActiveElement() *Element {
 	return WrapElement(e.Get("activeElement"))
 }
 
+func (e *Document) Body() *Element {
+	return WrapElement(e.Get("body"))
+}
+
+func (e *Document) Head() *Element {
+	return WrapElement(e.Get("head"))
+}
+
 func (e *Document) DocumentElement() *Element {
 	return WrapElement(e.Get("documentElement"))
 }
@@ -35,6 +43,18 @@ func (d *Document) CreateDocumentFragment() *Element {
 	return WrapElement(d.Call("createDocumentFragment"))
 }
 
+func (d *Document) DocumentURI() string {
+	return d.Get("documentURI").String()
+}
+
+func (d *Document) FullscreenElement() *Element {
+	return WrapElement(d.Get("fullscreenElement"))
+}
+
+func (d *Document) ExitFullscreen() {
+	d.Call("exitFullscreen")
+}
+
 func (d *Document) GetElementById(id string) *Element {
 	return WrapElement(d.Call("getElementById", id))
 }
@@ -48,7 +68,7 @@ func (e *Document) QuerySelectorAll(selectors string) []*Element {
 }
 
 func (e *Document) GetElementsByTagName(tagName string) []*Element {
-	return querySelectorAll(e.Value, tagName)
+	return getElementsByTagName(e.Value, tagName)
 }
 
 func (d *Document) Write(markup string) {

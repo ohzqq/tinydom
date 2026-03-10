@@ -13,7 +13,11 @@ type Element struct {
 }
 
 func WrapElement(val js.Value) *Element {
-	return &Element{BaseNode: WrapNode(val)}
+	return WrapBaseNode(WrapNode(val))
+}
+
+func WrapBaseNode(node *BaseNode) *Element {
+	return &Element{BaseNode: node}
 }
 
 func (e *Element) Underlying() js.Value {
@@ -21,15 +25,15 @@ func (e *Element) Underlying() js.Value {
 }
 
 func (e *Element) HasFocus() bool {
-	return e.IsEqualNode(WrapNode(GetDocument().ActiveElement().Value))
+	return e.IsEqualNode(GetDocument().ActiveElement())
 }
 
 func (e *Element) AppendBefore(n *Element) {
-	e.ParentNode().InsertBefore(WrapNode(n.Value), WrapNode(e.Value))
+	e.ParentNode().InsertBefore(n, e)
 }
 
 func (e *Element) AppendAfter(n *Element) {
-	e.ParentNode().InsertBefore(WrapNode(n.Value), e.NextSibling())
+	e.ParentNode().InsertBefore(n, e.NextSibling())
 }
 
 func (e *Element) SetId(id string) *Element {
@@ -171,7 +175,7 @@ func (e *Element) HasAttribute(name string) bool {
 func (e *Element) FindChildNode(tag string) *Element {
 	children := e.ChildNodes()
 	for _, child := range children {
-		c := WrapElement(child.Value)
+		c := WrapBaseNode(child)
 		if c.TagName() == tag {
 			return c
 		}
@@ -205,6 +209,20 @@ func (e *Element) Blur() *Element {
 func (e *Element) Focus() *Element {
 	e.Call("focus")
 	return e
+}
+
+func (e *Element) RequestFullscreen() {
+	e.Call("requestFullscreen")
+}
+
+func (e *Element) ToggleFullscreen() {
+	d := GetDocument()
+	el := d.FullscreenElement()
+	if el.Truthy() {
+		d.ExitFullscreen()
+		return
+	}
+	el.RequestFullscreen()
 }
 
 // Copyright (c) 2014 Dominik Honnef

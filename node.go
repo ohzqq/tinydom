@@ -11,7 +11,6 @@ type Node interface {
 }
 
 type BaseNode struct {
-	Node
 	js.Value
 }
 
@@ -27,7 +26,7 @@ func (e *BaseNode) AppendChild(child Node) {
 	e.Call("appendChild", child.Underlying())
 }
 
-func (e *BaseNode) AppendChildren(children ...*BaseNode) {
+func (e *BaseNode) AppendChildren(children ...Node) {
 	for _, child := range children {
 		e.AppendChild(child)
 	}
