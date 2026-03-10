@@ -8,6 +8,26 @@ type Event struct {
 	js.Value
 }
 
+func NewEvent(e string, opts ...*EventOptions) *Event {
+	return newEvent(e, false, opts...)
+}
+
+func NewCustomEvent(e string, opts ...*EventOptions) *Event {
+	return newEvent(e, true, opts...)
+}
+
+func newEvent(e string, custom bool, opts ...*EventOptions) *Event {
+	event := "Event"
+	if custom {
+		event = "CustomEvent"
+	}
+	args := []any{e}
+	if len(opts) > 0 {
+		args = append(args, opts[0].Value)
+	}
+	return &Event{Value: js.Global().Get(event).New(args...)}
+}
+
 func (e *Event) Target() *Element {
 	return WrapElement(e.Get("target"))
 }
@@ -34,4 +54,32 @@ func (e *Event) Key() string {
 
 func (e *Event) KeyCode() int {
 	return e.Get("keyCode").Int()
+}
+
+type EventOptions struct {
+	js.Value
+}
+
+func NewEventOptions() *EventOptions {
+	return &EventOptions{Value: js.ValueOf(map[string]any{})}
+}
+
+func (e *EventOptions) SetBubbles() *EventOptions {
+	e.Set("bubbles", true)
+	return e
+}
+
+func (e *EventOptions) SetCancelable() *EventOptions {
+	e.Set("cancelable", true)
+	return e
+}
+
+func (e *EventOptions) SetComposed() *EventOptions {
+	e.Set("composed", true)
+	return e
+}
+
+func (e *EventOptions) SetDetails(details js.Value) *EventOptions {
+	e.Set("details", details)
+	return e
 }

@@ -88,7 +88,7 @@ func (e *Element) Class() (bool, []string) {
 }
 
 func (e *Element) ClassList() *DOMTokenList {
-	return e.Get("classList")
+	return &DOMTokenList{Value: e.Get("classList")}
 }
 
 func (e *Element) SetMultiValueAttribute(attributeName string, values ...string) *Element {

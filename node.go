@@ -132,6 +132,11 @@ func (e *BaseNode) RemoveEventListener(t string, listener js.Func) *BaseNode {
 	return e
 }
 
+func (e *BaseNode) DispatchEvent(event *Event) *BaseNode {
+	e.Call("dispatchEvent", event.Value)
+	return e
+}
+
 func querySelector(e js.Value, selectors string) *Element {
 	return WrapElement(e.Call("querySelector", selectors))
 }
