@@ -80,6 +80,6 @@ func (e *EventOptions) SetComposed() *EventOptions {
 }
 
 func (e *EventOptions) SetDetails(details js.Value) *EventOptions {
-	e.Set("details", details)
+	e.Set("detail", details)
 	return e
 }
