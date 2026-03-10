@@ -12,6 +12,10 @@ func (s *CSS) SetProperty(name string, val string) {
 	s.Call("setProperty", name, val)
 }
 
+func (s *CSS) GetProperty(name string) string {
+	return s.Get(name).String()
+}
+
 func (s *CSS) CssText() string {
 	return s.Get("cssText").String()
 }

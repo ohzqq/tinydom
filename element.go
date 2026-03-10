@@ -16,6 +16,10 @@ func WrapElement(val js.Value) *Element {
 	return &Element{BaseNode: WrapNode(val)}
 }
 
+func (e *Element) Underlying() js.Value {
+	return e.BaseNode.Value
+}
+
 func (e *Element) HasFocus() bool {
 	return e.IsEqualNode(WrapNode(GetDocument().ActiveElement().Value))
 }
@@ -81,6 +85,10 @@ func (e *Element) Class() (bool, []string) {
 	}
 
 	return true, result
+}
+
+func (e *Element) ClassList() *DOMTokenList {
+	return e.Get("classList")
 }
 
 func (e *Element) SetMultiValueAttribute(attributeName string, values ...string) *Element {
