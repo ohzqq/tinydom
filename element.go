@@ -41,6 +41,10 @@ func (e *Element) SetId(id string) *Element {
 	return e
 }
 
+func (e *Element) GetId(id string) string {
+	return e.Get("id").String()
+}
+
 func (e *Element) SetAttribute(key, value interface{}) *Element {
 	e.Call("setAttribute", key, value)
 	return e
@@ -164,12 +168,15 @@ func (e *Element) GetAttribute(name string) (bool, string) {
 	if !e.HasAttribute(name) {
 		return false, ""
 	}
-
 	return true, e.Call("getAttribute", name).String()
 }
 
 func (e *Element) HasAttribute(name string) bool {
 	return e.Call("hasAttribute", name).Bool()
+}
+
+func (e *Element) ToggleAttribute(name string) {
+	return e.Call("toggleAttribute", name)
 }
 
 func (e *Element) FindChildNode(tag string) *Element {
