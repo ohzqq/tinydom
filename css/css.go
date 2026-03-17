@@ -9,11 +9,15 @@ type CSS struct {
 }
 
 func (s *CSS) SetProperty(name string, val string) {
-	s.Call("setProperty", name, val)
+	s.Call("setPropertyValue", name, val)
 }
 
 func (s *CSS) GetProperty(name string) string {
 	return s.Get(name).String()
+}
+
+func (s *CSS) RemoveProperty(name string) string {
+	s.Call("removeProperty", name)
 }
 
 func (s *CSS) CssText() string {
@@ -22,6 +26,10 @@ func (s *CSS) CssText() string {
 
 func (s *CSS) Length() int {
 	return s.Get("length").Int()
+}
+
+func (s *CSS) ParentRule() js.Value {
+	return s.Call("parentRule")
 }
 
 func (s *CSS) AlignContent() string {
