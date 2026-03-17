@@ -24,7 +24,7 @@ func (s *CSS) CssText() string {
 	return s.Get("cssText").String()
 }
 
-func (s *Css) Item(idx int) string {
+func (s *CSS) Item(idx int) string {
 	return s.Call("item", idx).String()
 }
 
@@ -34,8 +34,4 @@ func (s *CSS) Length() int {
 
 func (s *CSS) RemoveProperty(name string) string {
 	s.Call("removeProperty", name)
-}
-
-func (s *CSS) ParentRule() js.Value {
-	return s.Call("parentRule")
 }

@@ -176,7 +176,7 @@ func (e *Element) HasAttribute(name string) bool {
 }
 
 func (e *Element) ToggleAttribute(name string) {
-	return e.Call("toggleAttribute", name)
+	e.Call("toggleAttribute", name)
 }
 
 func (e *Element) FindChildNode(tag string) *Element {
