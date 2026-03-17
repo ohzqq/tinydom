@@ -32,6 +32,6 @@ func (s *CSS) Length() int {
 	return s.Get("length").Int()
 }
 
-func (s *CSS) RemoveProperty(name string) string {
+func (s *CSS) RemoveProperty(name string) {
 	s.Call("removeProperty", name)
 }
