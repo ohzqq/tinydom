@@ -8,6 +8,10 @@ type Location struct {
 	js.Value
 }
 
+func (l *Location) Hash() string {
+	return l.Get("hash").String()
+}
+
 func (l *Location) Host() string {
 	return l.Get("host").String()
 }
@@ -38,4 +42,8 @@ func (l *Location) Protocol() string {
 
 func (l *Location) Search() string {
 	return l.Get("search").String()
+}
+
+func (l *Location) SearchParams() js.Value {
+	return l.Get("searchParams")
 }
