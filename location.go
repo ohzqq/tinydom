@@ -44,6 +44,6 @@ func (l *Location) Search() string {
 	return l.Get("search").String()
 }
 
-func (l *Location) SearchParams() js.Value {
-	return l.Get("searchParams")
+func (l *Location) SearchParams() *SearchParams {
+	return &SearchParams{Value: l.Get("searchParams")}
 }
