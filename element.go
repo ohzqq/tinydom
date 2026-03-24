@@ -41,7 +41,7 @@ func (e *Element) SetId(id string) *Element {
 	return e
 }
 
-func (e *Element) GetId(id string) string {
+func (e *Element) GetId() string {
 	return e.Get("id").String()
 }
 

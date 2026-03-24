@@ -16,6 +16,10 @@ func NewCustomEvent(e string, opts ...*EventOptions) *Event {
 	return newEvent(e, true, opts...)
 }
 
+func WrapEvent(e js.Value) *Event {
+	return &Event{Value: e}
+}
+
 func newEvent(e string, custom bool, opts ...*EventOptions) *Event {
 	event := "Event"
 	if custom {
@@ -52,8 +56,24 @@ func (e *Event) Key() string {
 	return e.Get("key").String()
 }
 
+func (e *Event) Type() string {
+	return e.Get("type").String()
+}
+
 func (e *Event) KeyCode() int {
 	return e.Get("keyCode").Int()
+}
+
+func (e *Event) Detail() js.Value {
+	return e.Get("detail")
+}
+
+func (e *Event) Bubbles() bool {
+	return e.Get("bubbles").Bool()
+}
+
+func (e *Event) Composed() bool {
+	return e.Get("composed").Bool()
 }
 
 type EventOptions struct {
