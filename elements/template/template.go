@@ -18,7 +18,7 @@ func New() *Template {
 }
 
 func GetById(id string) *Template {
-	return WrapTemplate{tinydom.GetDocument().GetElementById(id).Underlying()}
+	return WrapTemplate(tinydom.GetDocument().GetElementById(id).Underlying())
 }
 
 func QuerySelector(sel string) *Template {
@@ -34,6 +34,6 @@ func (t *Template) ImportNode() *tinydom.DocumentFragment {
 	return tinydom.WrapDocumentFragment(content)
 }
 
-func (t *Template) Content() *tinydom.DocumentFragement {
+func (t *Template) Content() *tinydom.DocumentFragment {
 	return tinydom.WrapDocumentFragment(t.Underlying().Get("content"))
 }
