@@ -22,7 +22,7 @@ func GetById(id string) *Template {
 }
 
 func QuerySelector(sel string) *Template {
-	return WrapTemplate{tinydom.GetDocument().QuerySelector(sel).Underlying()}
+	return WrapTemplate(tinydom.GetDocument().QuerySelector(sel).Underlying())
 }
 
 func WrapTemplate(val js.Value) *Template {
