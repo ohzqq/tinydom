@@ -1,5 +1,3 @@
-//go:build js && wasm
-
 package tinydom
 
 import "syscall/js"
@@ -73,4 +71,46 @@ func (e *Document) GetElementsByTagName(tagName string) []*Element {
 
 func (d *Document) Write(markup string) {
 	d.Call("write", markup)
+}
+
+// DocumentFragment is the dom DocumentFragement interface.
+type DocumentFragment struct {
+	*BaseNode
+}
+
+// WrapDocumentFragment wraps a js.Value to *DocumentFragment.
+func WrapDocumentFragment(val js.Value) *DocumentFragment {
+	return &DocumentFragment{WrapNode(val)}
+}
+
+func (d *DocumentFragment) Append(nodes ...Node) {
+	for _, node := range nodes {
+		d.Call("append", node.Underlying())
+	}
+}
+
+func (d *DocumentFragment) Prepend(nodes ...Node) {
+	for _, node := range nodes {
+		d.Call("prepend", node.Underlying())
+	}
+}
+
+func (d *DocumentFragment) ChildElementCount() int {
+	return d.Get("childElementCount").Int()
+}
+
+func (d *DocumentFragment) GetElementById(id string) *Element {
+	return WrapElement(d.Call("getElementById", id))
+}
+
+func (e *DocumentFragment) QuerySelector(selectors string) *Element {
+	return querySelector(e.Value, selectors)
+}
+
+func (e *DocumentFragment) QuerySelectorAll(selectors string) []*Element {
+	return querySelectorAll(e.Value, selectors)
+}
+
+func (e *DocumentFragment) Children() *HTMLCollection {
+	return NewHTMLCollection(e)
 }

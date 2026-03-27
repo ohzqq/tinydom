@@ -1,5 +1,3 @@
-//go:build js && wasm
-
 package tinydom
 
 import (
@@ -95,6 +93,7 @@ func (e *Element) Class() (bool, []string) {
 	return true, result
 }
 
+// ClassList returns the *DOMTokenList of classes for the element.
 func (e *Element) ClassList() *DOMTokenList {
 	return &DOMTokenList{Value: e.Get("classList")}
 }
@@ -230,6 +229,48 @@ func (e *Element) ToggleFullscreen() {
 		return
 	}
 	el.RequestFullscreen()
+}
+
+func (e *Element) Children() *HTMLCollection {
+	return NewHTMLCollection(e)
+}
+
+type HTMLCollection struct {
+	js.Value
+}
+
+func NewHTMLCollection(node Node) *HTMLCollection {
+	return &HTMLCollection{node.Underlying()}
+}
+
+func (col *HTMLCollection) Length() int {
+	return col.Call("length").Int()
+}
+
+func (col *HTMLCollection) Item(idx int) *Element {
+	return WrapElement(col.Call("item", idx))
+}
+
+func (col *HTMLCollection) NamedItem(id string) *Element {
+	return WrapElement(col.Call("nameItem", id))
+}
+
+func (col *HTMLCollection) Elements() []*Element {
+	els := make([]*Element, col.Length())
+	for i := 0; i < col.Length(); i++ {
+		els[i] = col.Item(i)
+	}
+	return els
+}
+
+func getChildren(node Node) []*Element {
+	childs := node.Underlying().Get("children")
+	l := childs.Call("length").Int()
+	children := make([]*Element, l)
+	for i := 0; i < l; i++ {
+		children[i] = WrapElement(childs.Call("item", i))
+	}
+	return children
 }
 
 // Copyright (c) 2014 Dominik Honnef

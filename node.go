@@ -1,23 +1,25 @@
-//go:build js && wasm
-
 package tinydom
 
 import (
 	"syscall/js"
 )
 
+// Node is the interface for accessing the js.Value.
 type Node interface {
 	Underlying() js.Value
 }
 
+// BaseNode represents the dom Node interface
 type BaseNode struct {
 	js.Value
 }
 
+// WrapNode wraps a js.Value to *BaseNode
 func WrapNode(val js.Value) *BaseNode {
 	return &BaseNode{Value: val}
 }
 
+// Underlying satifies the Node interface
 func (b *BaseNode) Underlying() js.Value {
 	return b.Value
 }
