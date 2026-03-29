@@ -106,11 +106,11 @@ func (d *DocumentFragment) GetElementById(id string) *Element {
 }
 
 func (d *DocumentFragment) FirstElementChild() *Element {
-	return WrapElement(d.Call("firstElementChild"))
+	return WrapElement(d.Get("firstElementChild"))
 }
 
 func (d *DocumentFragment) LastElementChild() *Element {
-	return WrapElement(d.Call("lastElementChild"))
+	return WrapElement(d.Get("lastElementChild"))
 }
 
 func (e *DocumentFragment) QuerySelector(selectors string) *Element {
