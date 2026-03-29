@@ -2,8 +2,6 @@ package tinydom
 
 import (
 	"syscall/js"
-
-	"github.com/ohzqq/tinydom"
 )
 
 // Document wraps the JavaScript document element, which is usually fetched by js.Global().Get("document")
@@ -107,11 +105,11 @@ func (d *DocumentFragment) GetElementById(id string) *Element {
 	return WrapElement(d.Call("getElementById", id))
 }
 
-func (d *DocumentFragment) FirstElementChild() *tinydom.Element {
+func (d *DocumentFragment) FirstElementChild() *Element {
 	return WrapElement(d.Call("firstElementChild"))
 }
 
-func (d *DocumentFragment) LastElementChild() *tinydom.Element {
+func (d *DocumentFragment) LastElementChild() *Element {
 	return WrapElement(d.Call("lastElementChild"))
 }
 
