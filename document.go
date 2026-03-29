@@ -1,6 +1,10 @@
 package tinydom
 
-import "syscall/js"
+import (
+	"syscall/js"
+
+	"github.com/ohzqq/tinydom"
+)
 
 // Document wraps the JavaScript document element, which is usually fetched by js.Global().Get("document")
 type Document struct {
@@ -101,6 +105,14 @@ func (d *DocumentFragment) ChildElementCount() int {
 
 func (d *DocumentFragment) GetElementById(id string) *Element {
 	return WrapElement(d.Call("getElementById", id))
+}
+
+func (d *DocumentFragment) FirstElementChild() *tinydom.Element {
+	return WrapElement(d.Call("firstElementChild"))
+}
+
+func (d *DocumentFragment) LastElementChild() *tinydom.Element {
+	return WrapElement(d.Call("lastElementChild"))
 }
 
 func (e *DocumentFragment) QuerySelector(selectors string) *Element {
