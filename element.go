@@ -4,6 +4,8 @@ import (
 	"errors"
 	"strings"
 	"syscall/js"
+
+	"github.com/tinywasm/jsvalue"
 )
 
 type Element struct {
@@ -41,11 +43,6 @@ func (e *Element) SetId(id string) *Element {
 
 func (e *Element) GetId() string {
 	return e.Get("id").String()
-}
-
-func (e *Element) SetAttribute(key, value interface{}) *Element {
-	e.Call("setAttribute", key, value)
-	return e
 }
 
 func (e *Element) SetClass(values ...string) *Element {
@@ -159,6 +156,16 @@ func (e *Element) OuterHTML() string {
 
 func (e *Element) SetOuterHTML(html string) *Element {
 	e.Set("outerHTML", html)
+	return e
+}
+
+func (e *Element) SetAttribute(key string, value any) *Element {
+	e.Call("setAttribute", key, jsvalue.ToJS(value))
+	return e
+}
+
+func (e *Element) RemoveAttribute(key string) *Element {
+	e.Call("removeAttribute", key)
 	return e
 }
 

@@ -1,6 +1,10 @@
 package tinydom
 
-import "syscall/js"
+import (
+	"syscall/js"
+
+	"github.com/tinywasm/jsvalue"
+)
 
 type Window struct {
 	js.Value
@@ -50,4 +54,18 @@ func (w *Window) ScrollX() float64 {
 
 func (w *Window) ScrollY() float64 {
 	return w.Get("scrollY").Float()
+}
+
+type console struct {
+	js.Value
+}
+
+var Console = &console{js.Global().Get("console")}
+
+func (c *console) Log(args ...any) {
+	vals := make([]js.Value, len(args))
+	for i, v := range vals {
+		vals[i] = jsvalue.ToJS(v)
+	}
+	Console.Call("log", vals...)
 }
