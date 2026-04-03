@@ -275,8 +275,7 @@ func getChildren(node Node) []*Element {
 
 // Copyright (c) 2014 Dominik Honnef
 // MIT License
-// from  github.com/dominikh/go-js-dom
-
+// from  honnef.co/go/js/dom/v2
 func (e *Element) Dataset() map[string]string {
 	o := e.Get("dataset")
 	data := map[string]string{}
@@ -287,6 +286,9 @@ func (e *Element) Dataset() map[string]string {
 	return data
 }
 
+// Copyright (c) 2014 Dominik Honnef
+// MIT License
+// from  honnef.co/go/js/dom/v2
 // jsKeys returns the keys of the given JavaScript object.
 func jsKeys(o js.Value) []string {
 	if o.IsNull() || o.IsUndefined() {
@@ -298,4 +300,19 @@ func jsKeys(o js.Value) []string {
 		s[i] = a.Index(i).String()
 	}
 	return s
+}
+
+// Copyright (c) 2014 Dominik Honnef
+// MIT License
+// from  honnef.co/go/js/dom/v2
+// Attributes returns the attributes as a string map.
+func (e *Element) Attributes() map[string]string {
+	o := e.Get("attributes")
+	attrs := map[string]string{}
+	length := o.Get("length").Int()
+	for i := 0; i < length; i++ {
+		item := o.Call("item", i)
+		attrs[item.Get("name").String()] = item.Get("value").String()
+	}
+	return attrs
 }
