@@ -63,7 +63,7 @@ type console struct {
 var Console = &console{js.Global().Get("console")}
 
 func (c *console) Log(args ...any) {
-	vals := make([]js.Value, len(args))
+	vals := make([]any, len(args))
 	for i, v := range vals {
 		vals[i] = jsvalue.ToJS(v)
 	}
