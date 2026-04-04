@@ -251,7 +251,7 @@ func NewHTMLCollection(node Node) *HTMLCollection {
 }
 
 func (col *HTMLCollection) Length() int {
-	return col.Call("length").Int()
+	return col.Get("length").Int()
 }
 
 func (col *HTMLCollection) Item(idx int) *Element {
