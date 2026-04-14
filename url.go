@@ -13,9 +13,12 @@ func ParseURL(args ...string) (*URL, bool) {
 		return nil, false
 	case 2:
 		b = args[1]
-		fallthrough
+		u = args[0]
 	case 1:
 		u = args[0]
+	}
+	if b == "" {
+		b = "http://example.com"
 	}
 	return &URL{
 		Value: js.Global().Get("URL").Call("parse", u, b),
