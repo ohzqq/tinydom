@@ -17,9 +17,6 @@ func ParseURL(args ...string) (*URL, bool) {
 	case 1:
 		u = args[0]
 	}
-	if !js.Global().Get("URL").Call("canParse", u, b).Bool() {
-		return nil, false
-	}
 	return &URL{
 		Value: js.Global().Get("URL").Call("parse", u, b),
 	}, true
